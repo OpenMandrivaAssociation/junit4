@@ -134,8 +134,8 @@ done
 %doc README.html
 %{_javadir}/*
 %if %{gcj_support}
-#%dir %{_libdir}/gcj/%{name}
-#%attr(-,root,root) %{_libdir}/gcj/%{name}/*
+%dir %{_libdir}/gcj/%{name}
+%attr(-,root,root) %{_libdir}/gcj/%{name}/*
 %endif
 %dir %{_datadir}/%{name}
 
