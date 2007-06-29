@@ -104,7 +104,7 @@ Demonstrations and samples for %{name}.
 %{__cp} -a junit%{version}/junit/* %{buildroot}%{_datadir}/%{name}
 
 %if %{gcj_support}
-#%{_bindir}/aot-compile-rpm
+%{_bindir}/aot-compile-rpm
 %endif
 
 # fix end-of-line
