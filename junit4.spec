@@ -33,7 +33,7 @@
 
 Name:           junit4
 Version:        4.3.1
-Release:        %mkrel 1.1
+Release:        %mkrel 1.2
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
