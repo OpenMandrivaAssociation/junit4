@@ -94,7 +94,7 @@ Demonstrations and samples for %{name}.
 # jars
 %{__mkdir_p} %{buildroot}%{_javadir}
 %{__cp} -a junit%{version}/junit.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
-(cd %{buildroot}%{_javadir} && for jar in *-%{version}*; do ^{__ln_s} ${jar} ${jar/-%{version}/}; done)
+(cd %{buildroot}%{_javadir} && for jar in *-%{version}*; do %{__ln_s} ${jar} ${jar/-%{version}/}; done)
 # javadoc
 %{__mkdir_p} %{buildroot}%{_javadocdir}/%{name}-%{version}
 %{__cp} -a junit%{version}/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
