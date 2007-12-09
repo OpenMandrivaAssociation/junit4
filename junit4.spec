@@ -1,4 +1,4 @@
-# Copyright (c) 2000-2005, JPackage Project
+# Copyright (c) 2000-2007, JPackage Project
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -28,12 +28,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-%define gcj_support        1
+%define gcj_support        0
 %define section            free
 
 Name:           junit4
 Version:        4.3.1
-Release:        %mkrel 1.3
+Release:        %mkrel 2.0.1
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
