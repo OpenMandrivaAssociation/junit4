@@ -48,7 +48,6 @@ BuildRequires:  java-gcj-compat-devel
 %else
 BuildArch:      noarch
 %endif
-Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 JUnit is a regression testing framework written by Erich Gamma and Kent
