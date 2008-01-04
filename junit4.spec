@@ -28,12 +28,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-%define gcj_support        0
+%define gcj_support        1
 %define section            free
 
 Name:           junit4
 Version:        4.3.1
-Release:        %mkrel 2.0.2
+Release:        %mkrel 2.0.3
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
@@ -71,9 +71,9 @@ Summary:        Javadoc for %{name}
 Javadoc for %{name}.
 
 %package demo
-Group:                Development/Java
+Group:          Development/Java
 Summary:        Demos for %{name}
-Requires:        %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description demo
 Demonstrations and samples for %{name}.
