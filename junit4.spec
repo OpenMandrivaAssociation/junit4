@@ -33,7 +33,7 @@
 
 Name:           junit4
 Version:        4.3.1
-Release:        %mkrel 2.0.3
+Release:        %mkrel 2.0.4
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
@@ -96,7 +96,7 @@ Demonstrations and samples for %{name}.
 # javadoc
 %{__mkdir_p} %{buildroot}%{_javadocdir}/%{name}-%{version}
 %{__cp} -a junit%{version}/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
-(cd  %{buildroot}%{_javadocdir} && %{__ln_s} %{name}-%{version} %{name})
+(cd %{buildroot}%{_javadocdir} && %{__ln_s} %{name}-%{version} %{name})
 # demo
 %{__mkdir_p} %{buildroot}%{_datadir}/%{name}
 %{__cp} -a junit%{version}/junit/* %{buildroot}%{_datadir}/%{name}
