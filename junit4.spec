@@ -33,7 +33,7 @@
 
 Name:           junit4
 Version:        4.3.1
-Release:        %mkrel 3.0.1
+Release:        %mkrel 4.0.1
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
@@ -111,9 +111,7 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/maven2/poms/JPP-%{name}.pom
 %{__mkdir_p} %{buildroot}%{_datadir}/%{name}/demo/junit
 %{__cp} -a junit%{version}/junit/* %{buildroot}%{_datadir}/%{name}/demo/junit
 
-%if %{gcj_support}
-%{_bindir}/aot-compile-rpm
-%endif
+%{gcj_compile}
 
 # fix end-of-line
 %{__perl} -pi -e 's/\r$//g' README.html
