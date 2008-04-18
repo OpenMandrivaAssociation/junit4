@@ -29,22 +29,29 @@
 #
 
 %define gcj_support        1
-%define section            free
 
 Name:           junit4
-Version:        4.3.1
-Release:        %mkrel 4.0.1
+Version:        4.4
+Release:        %mkrel 1.0.1
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
 Url:            http://www.junit.org/
 Group:          Development/Java
-Source0:        http://internap.dl.sourceforge.net/sourceforge/junit/junit4.3.1.zip
-Source1:        junit4.3.1-build.xml
-Source2:        junit-4.3.1.pom
+Source0:        junit-4.4.tar.gz
+# steps to reproduce
+# cvs -d:pserver:anonymous@junit.cvs.sourceforge.net:/cvsroot/junit login
+# cvs -z3 -d:pserver:anonymous@junit.cvs.sourceforge.net:/cvsroot/junit export -r r44 junit
+# mv junit junit-4.4
+# tar czf junit-4.4.tar.gz junit-4.4/
+
+# Source1:        junit4.4-build.xml
+Source2:        junit-4.4.pom
+Patch0:         junit4-4.4-AllTests.patch
 BuildRequires:  ant
 BuildRequires:  java-rpmbuild >= 0:1.6
 BuildRequires:  dos2unix
+BuildRequires:  hamcrest
 %if %{gcj_support}
 BuildRequires:  java-gcj-compat-devel
 %else
@@ -82,10 +89,12 @@ Requires:       %{name} = %{epoch}:%{version}-%{release}
 Demonstrations and samples for %{name}.
 
 %prep
-%setup -q -n junit%{version}
-%{jar} xf junit-%{version}-src.jar
-%{__cp} -a %{SOURCE1} build.xml
+%setup -q -n junit-%{version}
 %remove_java_binaries
+ln -sf $(build-classpath hamcrest/core) lib/hamcrest-core-1.1.jar
+rm src/org/junit/tests/BothTest.java
+%patch0 -b .sav0
+
 
 %build
 %{ant} dist
@@ -97,7 +106,7 @@ find -name \*.htm -o -name \*.html | xargs dos2unix
 
 # jars
 %{__mkdir_p} %{buildroot}%{_javadir}
-%{__cp} -a junit%{version}/junit.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
+%{__cp} -a junit%{version}/junit-4.4.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
 (cd %{buildroot}%{_javadir} && for jar in *-%{version}*; do %{__ln_s} ${jar} ${jar/-%{version}/}; done)
 # pom
 install -d -m 755 %{buildroot}%{_datadir}/maven2/poms
