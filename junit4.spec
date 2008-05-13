@@ -32,7 +32,7 @@
 
 Name:           junit4
 Version:        4.4
-Release:        %mkrel 1.0.1
+Release:        %mkrel 1.0.2
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
@@ -112,6 +112,7 @@ find -name \*.htm -o -name \*.html | xargs dos2unix
 install -d -m 755 %{buildroot}%{_datadir}/maven2/poms
 install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/maven2/poms/JPP-%{name}.pom
 %add_to_maven_depmap junit junit %{version} JPP %{name}
+%add_to_maven_depmap junit junit4 %{version} JPP %{name}
 # javadoc
 %{__mkdir_p} %{buildroot}%{_javadocdir}/%{name}-%{version}
 %{__cp} -a junit%{version}/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
@@ -154,10 +155,7 @@ done
 %{_javadir}/*
 %{_datadir}/maven2
 %{_mavendepmapfragdir}
-%if %{gcj_support}
-%dir %{_libdir}/gcj/%{name}
-%attr(-,root,root) %{_libdir}/gcj/%{name}/*
-%endif
+%{gcj_files}
 %dir %{_datadir}/%{name}
 
 %files manual
