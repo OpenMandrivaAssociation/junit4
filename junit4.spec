@@ -31,14 +31,14 @@
 %define gcj_support        1
 
 Name:           junit4
-Version:        4.4
+Version:        4.5
 Release:        %mkrel 3.0.2
 Epoch:          0
 Summary:        Java regression test package
 License:        CPL
 Url:            http://www.junit.org/
 Group:          Development/Java
-Source0:        junit-4.4.tar.gz
+Source0:        junit-4.5.tar.bz2
 # steps to reproduce
 # cvs -d:pserver:anonymous@junit.cvs.sourceforge.net:/cvsroot/junit login
 # cvs -z3 -d:pserver:anonymous@junit.cvs.sourceforge.net:/cvsroot/junit export -r r44 junit
@@ -46,8 +46,7 @@ Source0:        junit-4.4.tar.gz
 # tar czf junit-4.4.tar.gz junit-4.4/
 
 # Source1:        junit4.4-build.xml
-Source2:        junit-4.4.pom
-Patch0:         junit4-4.4-AllTests.patch
+Source2:        junit-4.5.pom
 BuildRequires:  ant
 BuildRequires:  java-rpmbuild >= 0:1.6
 BuildRequires:  dos2unix
@@ -60,9 +59,9 @@ BuildArch:      noarch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
-JUnit is a regression testing framework written by Erich Gamma and Kent Beck. 
+JUnit is a regression testing framework written by Erich Gamma and Kent Beck.
 It is used by the developer who implements unit tests in Java. JUnit is Open
-Source Software, released under the Common Public License Version 1.0 and 
+Source Software, released under the Common Public License Version 1.0 and
 JUnit is Open Source Software, released under the IBM Public License and
 hosted on SourceForge.
 
@@ -92,8 +91,7 @@ Demonstrations and samples for %{name}.
 %setup -q -n junit-%{version}
 %remove_java_binaries
 ln -sf $(build-classpath hamcrest/core) lib/hamcrest-core-1.1.jar
-rm src/org/junit/tests/BothTest.java
-%patch0 -b .sav0
+#rm src/org/junit/tests/BothTest.java
 
 
 %build
@@ -106,7 +104,7 @@ find -name \*.htm -o -name \*.html | xargs dos2unix
 
 # jars
 %{__mkdir_p} %{buildroot}%{_javadir}
-%{__cp} -a junit%{version}/junit-4.4.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
+%{__cp} -a junit%{version}/junit-4.5.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
 (cd %{buildroot}%{_javadir} && for jar in *-%{version}*; do %{__ln_s} ${jar} ${jar/-%{version}/}; done)
 # pom
 install -d -m 755 %{buildroot}%{_datadir}/maven2/poms
