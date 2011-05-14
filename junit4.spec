@@ -28,40 +28,33 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-%define gcj_support        1
-
 Name:           junit4
-Version:        4.5
-Release:        %mkrel 3.0.2
-Epoch:          0
+Version:        4.8.2
+Release:        1
 Summary:        Java regression test package
 License:        CPL
-Url:            http://www.junit.org/
+URL:            http://www.junit.org/
 Group:          Development/Java
-Source0:        junit-4.5.tar.bz2
-# steps to reproduce
-# cvs -d:pserver:anonymous@junit.cvs.sourceforge.net:/cvsroot/junit login
-# cvs -z3 -d:pserver:anonymous@junit.cvs.sourceforge.net:/cvsroot/junit export -r r44 junit
-# mv junit junit-4.4
-# tar czf junit-4.4.tar.gz junit-4.4/
-
-# Source1:        junit4.4-build.xml
-Source2:        junit-4.5.pom
+# git clone --bare git://github.com/KentBeck/junit.git junit.git
+# mkdir junit-4.8.2
+# git --git-dir=junit.git --work-tree=junit-4.8.2 checkout r4.8.2
+# tar cjf junit-4.8.2.tar.bz2 junit-4.8.2/
+Source0:        junit-%{version}.tar.bz2
+Requires(post): jpackage-utils >= 0:1.7.4
+Requires(postun): jpackage-utils >= 0:1.7.4
+Requires:       hamcrest
+Requires:       java-1.6.0
 BuildRequires:  ant
-BuildRequires:  java-rpmbuild >= 0:1.6
-BuildRequires:  dos2unix
+BuildRequires:  jpackage-utils >= 0:1.7.4
+BuildRequires:  java-1.6.0-devel
 BuildRequires:  hamcrest
-%if %{gcj_support}
-BuildRequires:  java-gcj-compat-devel
-%else
 BuildArch:      noarch
-%endif
-Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
-JUnit is a regression testing framework written by Erich Gamma and Kent Beck.
+JUnit is a regression testing framework written by Erich Gamma and Kent Beck. 
 It is used by the developer who implements unit tests in Java. JUnit is Open
-Source Software, released under the Common Public License Version 1.0 and
+Source Software, released under the Common Public License Version 1.0 and 
 JUnit is Open Source Software, released under the IBM Public License and
 hosted on SourceForge.
 
@@ -75,6 +68,7 @@ Documentation for %{name}.
 %package javadoc
 Group:          Development/Java
 Summary:        Javadoc for %{name}
+Requires:       jpackage-utils
 
 %description javadoc
 Javadoc for %{name}.
@@ -89,82 +83,67 @@ Demonstrations and samples for %{name}.
 
 %prep
 %setup -q -n junit-%{version}
-%remove_java_binaries
-ln -sf $(build-classpath hamcrest/core) lib/hamcrest-core-1.1.jar
-#rm src/org/junit/tests/BothTest.java
-
+find . -type f -name "*.jar" | xargs -t rm
+ln -s $(build-classpath hamcrest/core) lib/hamcrest-core-1.1.jar
+perl -pi -e 's/\r$//g' stylesheet.css
 
 %build
-%{ant} dist
-
-find -name \*.htm -o -name \*.html | xargs dos2unix
+export CLASSPATH=
+export OPT_JAR_LIST=:
+ant -Dant.build.javac.source=1.5 dist
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 # jars
-%{__mkdir_p} %{buildroot}%{_javadir}
-%{__cp} -a junit%{version}/junit-4.5.jar %{buildroot}%{_javadir}/%{name}-%{version}.jar
-(cd %{buildroot}%{_javadir} && for jar in *-%{version}*; do %{__ln_s} ${jar} ${jar/-%{version}/}; done)
+install -d -m 755 $RPM_BUILD_ROOT%{_javadir}
+install -m 644 junit%{version}/junit-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+pushd $RPM_BUILD_ROOT%{_javadir} 
+ln -sf %{name}-%{version}.jar %{name}.jar
+popd
+
 # pom
-install -d -m 755 %{buildroot}%{_datadir}/maven2/poms
-install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/maven2/poms/JPP-%{name}.pom
+install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/maven2/poms
+install -m 644 pom.xml $RPM_BUILD_ROOT%{_datadir}/maven2/poms/JPP-%{name}.pom
 %add_to_maven_depmap junit junit %{version} JPP %{name}
-%add_to_maven_depmap junit junit4 %{version} JPP %{name}
+
 # javadoc
-%{__mkdir_p} %{buildroot}%{_javadocdir}/%{name}-%{version}
-%{__cp} -a junit%{version}/javadoc/* %{buildroot}%{_javadocdir}/%{name}-%{version}
-(cd %{buildroot}%{_javadocdir} && %{__ln_s} %{name}-%{version} %{name})
+install -d -m 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+cp -pr junit%{version}/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
+ln -s %{name}-%{version} $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+
 # demo
-%{__mkdir_p} %{buildroot}%{_datadir}/%{name}/demo/junit
-%{__cp} -a junit%{version}/junit/* %{buildroot}%{_datadir}/%{name}/demo/junit
-
-%{gcj_compile}
-
-# fix end-of-line
-%{__perl} -pi -e 's/\r$//g' README.html
-
-for i in `find junit%{version}/doc -type f -name "*.htm*"`; do
-    %{__perl} -pi -e 's/\r$//g' $i
-done
-
-for i in `find %{buildroot}%{_datadir}/%{name} -type f -name "*.java"`; do
-    %{__perl} -pi -e 's/\r$//g' $i
-done
+install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/%{name}/demo/junit # Not using %%name for last part because it is 
+                                                                # part of package name
+cp -pr junit%{version}/junit/* $RPM_BUILD_ROOT%{_datadir}/%{name}/demo/junit
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_maven_depmap
-%if %{gcj_support}
-%{update_gcjdb}
-%endif
 
 %postun
 %update_maven_depmap
-%if %{gcj_support}
-%{clean_gcjdb}
-%endif
 
 %files
 %defattr(0644,root,root,0755)
-%doc README.html
-%{_javadir}/*
-%{_datadir}/maven2
-%{_mavendepmapfragdir}
-%{gcj_files}
-%dir %{_datadir}/%{name}
+%doc cpl-v10.html README.html
+%{_javadir}/%{name}.jar
+%{_javadir}/%{name}-%{version}.jar
+%{_datadir}/maven2/*
+%{_mavendepmapfragdir}/*
 
-%files manual
+%files demo
 %defattr(0644,root,root,0755)
-%doc junit%{version}/doc/*
+%{_datadir}/%{name}
 
 %files javadoc
 %defattr(0644,root,root,0755)
 %{_javadocdir}/%{name}-%{version}
 %{_javadocdir}/%{name}
 
-%files demo
+%files manual
 %defattr(0644,root,root,0755)
-%{_datadir}/%{name}/*
+%doc junit%{version}/doc/*
+
