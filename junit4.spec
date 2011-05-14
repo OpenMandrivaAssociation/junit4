@@ -76,7 +76,7 @@ Javadoc for %{name}.
 %package demo
 Group:          Development/Java
 Summary:        Demos for %{name}
-Requires:       %{name} = %{epoch}:%{version}-%{release}
+Requires:       %{name} = %{version}-%{release}
 
 %description demo
 Demonstrations and samples for %{name}.
