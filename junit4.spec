@@ -30,7 +30,7 @@
 
 Name:           junit4
 Version:        4.8.2
-Release:        3
+Release:        4
 Summary:        Java regression test package
 License:        CPL
 URL:            http://www.junit.org/
