@@ -30,7 +30,7 @@
 
 Name:           junit4
 Version:        4.8.2
-Release:        4
+Release:        3
 Summary:        Java regression test package
 License:        CPL
 URL:            http://www.junit.org/
@@ -147,3 +147,82 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0644,root,root,0755)
 %doc junit%{version}/doc/*
 
+
+
+%changelog
+* Sat May 14 2011 Oden Eriksson <oeriksson@mandriva.com> 4.8.2-3
++ Revision: 674567
+- rebuild
+
+* Sat May 14 2011 Oden Eriksson <oeriksson@mandriva.com> 4.8.2-2
++ Revision: 674552
+- drop the undefined epoch
+- rebuild
+
+  + Guilherme Moro <guilherme@mandriva.com>
+    - Sync with fedora
+
+* Fri Jan 23 2009 Jérôme Soyer <saispo@mandriva.org> 0:4.5-3.0.2mdv2009.1
++ Revision: 332739
+- New upstream release
+
+* Wed Aug 06 2008 Thierry Vignaud <tv@mandriva.org> 0:4.4-3.0.2mdv2009.0
++ Revision: 264757
+- rebuild early 2009.0 package (before pixel changes)
+
+* Tue May 13 2008 Alexander Kurtakov <akurtakov@mandriva.org> 0:4.4-1.0.2mdv2009.0
++ Revision: 206543
+- add artifactId junit:junit4 to the depmap
+
+* Fri Apr 18 2008 Alexander Kurtakov <akurtakov@mandriva.org> 0:4.4-1.0.1mdv2009.0
++ Revision: 195643
+- new version
+
+* Mon Feb 18 2008 Alexander Kurtakov <akurtakov@mandriva.org> 0:4.3.1-4.0.1mdv2008.1
++ Revision: 171990
+- use %%{gcj_compile} macro
+
+* Thu Feb 07 2008 Alexander Kurtakov <akurtakov@mandriva.org> 0:4.3.1-3.0.1mdv2008.1
++ Revision: 163776
+- add maven pom
+
+* Thu Jan 10 2008 David Walluck <walluck@mandriva.org> 0:4.3.1-2.0.4mdv2008.1
++ Revision: 147444
+- bump release
+
+* Fri Jan 04 2008 David Walluck <walluck@mandriva.org> 0:4.3.1-2.0.3mdv2008.1
++ Revision: 145454
+- rebuild with gcj support
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sun Dec 16 2007 Anssi Hannula <anssi@mandriva.org> 0:4.3.1-2.0.2mdv2008.1
++ Revision: 120955
+- buildrequire java-rpmbuild, i.e. build with icedtea on x86(_64)
+
+* Sun Dec 09 2007 Alexander Kurtakov <akurtakov@mandriva.org> 0:4.3.1-2.0.1mdv2008.1
++ Revision: 116715
+- disable gcj_support - aot fails
+
+  + Anssi Hannula <anssi@mandriva.org>
+    - rebuild to filter out autorequires of GCJ AOT objects
+    - remove unnecessary Requires(post) on java-gcj-compat
+
+* Fri Jun 29 2007 David Walluck <walluck@mandriva.org> 0:4.3.1-1.2mdv2008.0
++ Revision: 45723
+- disable test run for now
+- fix jar contents
+- fix typo in %%{__ln_s} macro
+- bump release
+- enable aot-compile-rpm
+- enable gcj support
+- Import junit4
+
+
+
+* Fri Jun 29 2007 David Walluck <walluck@mandriva.org> 0:4.3.1-1.1mdv2008.0
+- release
